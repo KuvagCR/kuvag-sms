@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.telephony.SubscriptionInfo
 import android.telephony.SubscriptionManager
 import android.view.Gravity
+import android.widget.ScrollView
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -25,7 +26,7 @@ class MainActivity : Activity() {
         }
 
         val heading = TextView(this).apply {
-            text = "KUVAG SMS – kontrola SIM"
+            text = "KUVAG SMS – kontrola SIM (verze s ID)"
             textSize = 23f
         }
         result = TextView(this).apply {
@@ -38,8 +39,26 @@ class MainActivity : Activity() {
             setOnClickListener { checkPermissionAndRead() }
         }
 
+        val scrollView = ScrollView(this).apply {
+            isFillViewport = true
+            addView(
+                result,
+                ScrollView.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+            )
+        }
+
         layout.addView(heading)
-        layout.addView(result)
+        layout.addView(
+            scrollView,
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                0,
+                1f
+            )
+        )
         layout.addView(refresh)
         setContentView(layout)
 
