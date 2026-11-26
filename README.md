@@ -29,6 +29,8 @@ Tato architektura je návrh, nikoli potvrzení kompatibility telefonu. Výběr S
 - [x] Soukromý GitHub repozitář založen
 - [x] Bezpečnostní zásady a architektura sepsány
 - [ ] Ověřit přesný model OnePlus a verzi Androidu
+- [x] Připravena první diagnostická Android aplikace – pouze čte aktivní SIM a jejich sloty; SMS zatím neumí odesílat
+- [ ] Prakticky ověřit zobrazení SIM 1 a SIM 2 na OnePlus Nord CE5
 - [ ] Ověřit možnost vynuceného odesílání přes SIM 2
 - [ ] Zjistit názvy sloupců v Excelu (bez sdílení reálných osobních údajů)
 - [ ] Ověřit možnosti Microsoft Graph a firemní IT souhlas
@@ -58,3 +60,15 @@ Zdroje:
 - [Oficiální specifikace OnePlus Nord CE5](https://www.oneplus.com/mt/nord-ce5/specs)
 - [Android SubscriptionManager](https://developer.android.com/reference/android/telephony/SubscriptionManager)
 - [Android SmsManager](https://developer.android.com/reference/android/telephony/SmsManager)
+
+
+## První diagnostická verze Android aplikace
+
+Ve složce `app/` je připraven základ Android aplikace. Po instalaci požádá pouze o oprávnění `READ_PHONE_STATE` a zobrazí aktivní SIM, operátora, název SIM a číslo slotu.
+
+- Aplikace **neobsahuje oprávnění SEND_SMS** a neumí odesílat zprávy.
+- Nečte telefonní čísla SIM ani kontakty.
+- Nemá síťové oprávnění a nic neposílá na internet.
+- Slot 2 označí jako kandidáta pro služební SIM; zatím se nespoléháme na to, že samotný slot potvrzuje, která karta je služební.
+
+Další postup: nejprve sestavit a nainstalovat diagnostickou verzi, na telefonu ověřit, že služební karta je skutečně uvedena ve slotu 2, a teprve potom navrhnout bezpečný test explicitního výběru SIM 2. Žádné hromadné odesílání se zatím nepřipravuje.
