@@ -83,7 +83,7 @@ class MainActivity : Activity() {
                     } else {
                         "PRVNÍ SLOT – nepoužívat pro firemní SMS"
                     }
-                    "SIM ve slotu $slotNumber\nOperátor: $carrier\nNázev SIM: $label\n$purpose"
+                    "SIM ve slotu $slotNumber\nOperátor: $carrier\nNázev SIM: $label\nSubscription ID: ${info.subscriptionId}\nSlot Index (Android): ${info.simSlotIndex}\n$purpose"
                 }
 
             result.text = lines.joinToString("\n\n") +
