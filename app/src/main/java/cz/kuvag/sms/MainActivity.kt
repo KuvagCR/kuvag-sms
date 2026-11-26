@@ -41,13 +41,7 @@ class MainActivity : Activity() {
 
         val scrollView = ScrollView(this).apply {
             isFillViewport = true
-            addView(
-                result,
-                ScrollView.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                )
-            )
+            addView(result)
         }
 
         layout.addView(heading)
