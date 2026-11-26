@@ -6,7 +6,7 @@
 
     <application
         android:allowBackup="false"
-        android:label="KUVAG SMS – diagnostika SIM"
+        android:label="KUVAG SMS – test služební SIM"
         android:theme="@android:style/Theme.Material.Light.NoActionBar">
         <activity
             android:name=".MainActivity"
