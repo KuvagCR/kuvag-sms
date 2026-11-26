@@ -39,3 +39,22 @@ Tato architektura je návrh, nikoli potvrzení kompatibility telefonu. Výběr S
 ## Vývoj
 
 Projekt budeme připravovat přes GitHub Codespaces v prohlížeči, bez nutnosti instalovat vývojové prostředí na počítač. Instalace doprovodné aplikace do telefonu bude nutná.
+
+
+## Ověření telefonu: OnePlus Nord CE5
+
+Oficiální specifikace OnePlus potvrzují dva sloty pro nano-SIM (hybridní zásuvka: druhá pozice může být alternativně využita pro microSD). Telefon tedy hardwarově podporuje dvě SIM, pokud jsou skutečně vloženy dvě SIM karty.
+
+Na Androidu lze postupovat bezpečněji než přes výchozí SIM:
+- načíst aktivní předplatná SIM,
+- zjistit slot index každého předplatného,
+- vybrat pouze předplatné se slot indexem **1** (Android čísluje sloty od nuly, takže index 1 odpovídá druhému slotu),
+- vytvořit SmsManager výslovně pro toto subscription ID pomocí createForSubscriptionId,
+- pokud slot 1 nebo jeho subscription ID chybí, je neplatné nebo se nedá ověřit, odeslání zablokovat.
+
+Tohle je podporovaný postup Android API, nikoli ještě prakticky ověřená záruka pro konkrétní firmware OnePlus. Před skutečným použitím uděláme diagnostický test, který pouze zobrazí nalezené SIM a jejich sloty. Teprve po potvrzení správné služební SIM připravíme testovací SMS na vlastní číslo.
+
+Zdroje:
+- [Oficiální specifikace OnePlus Nord CE5](https://www.oneplus.com/mt/nord-ce5/specs)
+- [Android SubscriptionManager](https://developer.android.com/reference/android/telephony/SubscriptionManager)
+- [Android SmsManager](https://developer.android.com/reference/android/telephony/SmsManager)
