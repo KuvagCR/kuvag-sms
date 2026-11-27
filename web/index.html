@@ -5,70 +5,342 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#6f2338">
 <meta name="description" content="Ukázka webového rozhraní KUVAG SMS. Testovací kontakty, bez skutečného odesílání.">
-<title>KUVAG SMS</title>
+<title>KUVAG SMS – demo</title>
 <style>
 :root{color-scheme:light;--wine:#70263d;--wine-dark:#541b2d;--rose:#f7edf0;--ink:#262329;--muted:#77717a;--line:#e9e3e6;--paper:#fff;--bg:#f7f5f6;--green:#24764d;--amber:#94651a}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
 header{background:linear-gradient(115deg,var(--wine-dark),var(--wine));color:white;padding:20px max(20px,calc((100vw - 1160px)/2));display:flex;align-items:center;justify-content:space-between;gap:16px}
-.brand{display:flex;align-items:center;gap:12px}.logo{width:42px;height:42px;border:1px solid #ffffff66;border-radius:12px;display:grid;place-items:center;font-weight:800;letter-spacing:.04em}.brand h1{font-size:20px;margin:0}.brand p{margin:2px 0 0;color:#f0dce2;font-size:12px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:42px;height:42px;border:1px solid #ffffff66;border-radius:12px;display:grid;place-items:center;font-weight:800;letter-spacing:.04em}
+.brand h1{font-size:20px;margin:0}
+.brand p{margin:2px 0 0;color:#f0dce2;font-size:12px}
 .status{font-size:12px;border:1px solid #ffffff55;border-radius:99px;padding:7px 11px;white-space:nowrap}
-main{max-width:1160px;margin:26px auto;padding:0 20px 50px}.intro{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:20px}.intro h2{font-size:25px;margin:0 0 4px}.intro p{color:var(--muted);margin:0}.demo{background:#fff5df;color:#805817;border:1px solid #f0dfb9;border-radius:9px;padding:8px 11px;font-size:12px}
-.layout{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(320px,.88fr);gap:18px;align-items:start}.panel{background:var(--paper);border:1px solid var(--line);border-radius:15px;box-shadow:0 3px 14px #24121a08;overflow:hidden}.panel-head{padding:17px 19px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}.panel-head h3{font-size:16px;margin:0}.sub{color:var(--muted);font-size:12px}.panel-body{padding:18px 19px}
-.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}.search{flex:1;min-width:180px;border:1px solid var(--line);border-radius:9px;padding:10px 12px;font:inherit}.select{border:1px solid var(--line);border-radius:9px;padding:9px 11px;background:#fff;font:inherit;color:var(--ink)}
-.actions{display:flex;justify-content:space-between;align-items:center;margin:8px 0 10px;gap:10px}.link{border:0;background:none;color:var(--wine);font-weight:650;padding:4px 0;cursor:pointer}.count{color:var(--muted);font-size:12px}
-.people{border:1px solid var(--line);border-radius:10px;overflow:hidden}.person{display:flex;align-items:center;gap:11px;padding:12px 13px;border-bottom:1px solid var(--line)}.person:last-child{border:0}.person input{width:17px;height:17px;accent-color:var(--wine)}.person-main{flex:1;min-width:0}.person-name{font-weight:650}.person-meta{font-size:12px;color:var(--muted)}.tag{font-size:11px;background:#f3eff1;color:#685c63;border-radius:6px;padding:4px 7px;white-space:nowrap}
-textarea{width:100%;min-height:150px;resize:vertical;border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit;line-height:1.5;outline-color:var(--wine)}.field-label{display:block;font-weight:650;margin:0 0 8px}.message-foot{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin:7px 1px 18px}.summary{background:var(--rose);border-radius:10px;padding:13px 14px;display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px}.summary strong{font-size:22px;color:var(--wine)}.summary span{font-size:12px;color:#68545b}
-button{font:inherit}.primary{border:0;border-radius:9px;background:var(--wine);color:white;padding:12px 17px;font-weight:700;cursor:pointer;width:100%}.primary:hover{background:var(--wine-dark)}.primary:disabled{opacity:.45;cursor:not-allowed}.secondary{border:1px solid var(--line);background:white;border-radius:9px;padding:9px 12px;cursor:pointer;color:var(--ink)}
-.note{font-size:12px;color:var(--muted);margin:12px 0 0}.device{display:flex;align-items:center;gap:9px;margin-top:16px;padding:12px;border:1px solid var(--line);border-radius:10px}.dot{width:9px;height:9px;border-radius:50%;background:#c4a15c}.device strong{display:block;font-size:13px}.device span{display:block;color:var(--muted);font-size:11px}
+main{max-width:1160px;margin:26px auto;padding:0 20px 50px}
+.intro{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:20px}
+.intro h2{font-size:25px;margin:0 0 4px}
+.intro p{color:var(--muted);margin:0}
+.demo{background:#fff5df;color:#805817;border:1px solid #f0dfb9;border-radius:9px;padding:8px 11px;font-size:12px}
+.layout{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(320px,.88fr);gap:18px;align-items:start}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:15px;box-shadow:0 3px 14px #24121a08;overflow:hidden}
+.panel-head{padding:17px 19px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.panel-head h3{font-size:16px;margin:0}
+.sub{color:var(--muted);font-size:12px}
+.panel-body{padding:18px 19px}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}
+.search{flex:1;min-width:180px;border:1px solid var(--line);border-radius:9px;padding:10px 12px;font:inherit}
+.select{border:1px solid var(--line);border-radius:9px;padding:9px 11px;background:#fff;font:inherit;color:var(--ink)}
+.actions{display:flex;justify-content:space-between;align-items:center;margin:8px 0 10px;gap:10px}
+.link{border:0;background:none;color:var(--wine);font-weight:650;padding:4px 0;cursor:pointer}
+.count{color:var(--muted);font-size:12px}
+.people{border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.person{display:flex;align-items:center;gap:11px;padding:12px 13px;border-bottom:1px solid var(--line)}
+.person:last-child{border:0}
+.person input{width:17px;height:17px;accent-color:var(--wine)}
+.person-main{flex:1;min-width:0}
+.person-name{font-weight:650}
+.person-meta{font-size:12px;color:var(--muted)}
+.tag{font-size:11px;background:#f3eff1;color:#685c63;border-radius:6px;padding:4px 7px;white-space:nowrap}
+textarea{width:100%;min-height:150px;resize:vertical;border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit;line-height:1.5;outline-color:var(--wine)}
+.field-label{display:block;font-weight:650;margin:0 0 8px}
+.message-foot{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin:7px 1px 18px}
+.summary{background:var(--rose);border-radius:10px;padding:13px 14px;display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px}
+.summary strong{font-size:22px;color:var(--wine)}
+.summary span{font-size:12px;color:#68545b}
+button{font:inherit}
+.primary{border:0;border-radius:9px;background:var(--wine);color:white;padding:12px 17px;font-weight:700;cursor:pointer;width:100%}
+.primary:hover{background:var(--wine-dark)}
+.primary:disabled{opacity:.45;cursor:not-allowed}
+.secondary{border:1px solid var(--line);background:white;border-radius:9px;padding:9px 12px;cursor:pointer;color:var(--ink)}
+.note{font-size:12px;color:var(--muted);margin:12px 0 0}
+.device{display:flex;align-items:center;gap:9px;margin-top:16px;padding:12px;border:1px solid var(--line);border-radius:10px}
+.dot{width:9px;height:9px;border-radius:50%;background:#c4a15c}
+.device strong{display:block;font-size:13px}
+.device span{display:block;color:var(--muted);font-size:11px}
 .empty{padding:24px;text-align:center;color:var(--muted);font-size:13px;display:none}
 footer{max-width:1160px;margin:0 auto;padding:0 20px 28px;color:var(--muted);font-size:11px}
-dialog{border:0;border-radius:14px;padding:0;max-width:min(520px,calc(100vw - 28px));width:100%;box-shadow:0 20px 80px #160c1280}dialog::backdrop{background:#1c1119a6}.modal{padding:22px}.modal h3{margin:0 0 8px}.modal p{color:var(--muted);font-size:13px}.modal pre{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--bg);border-radius:9px;padding:13px;font:inherit;font-size:13px}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:16px}
-@media(max-width:760px){header{padding:15px 17px}.brand h1{font-size:18px}.status{font-size:11px}.intro{display:block}.intro h2{font-size:22px}.demo{display:inline-block;margin-top:12px}.layout{grid-template-columns:1fr}main{margin-top:18px;padding:0 13px 32px}.panel-head,.panel-body{padding-left:15px;padding-right:15px}.tag{display:none}}
+dialog{border:0;border-radius:14px;padding:0;max-width:min(520px,calc(100vw - 28px));width:100%;box-shadow:0 20px 80px #160c1280}
+dialog::backdrop{background:#1c1119a6}
+.modal{padding:22px}
+.modal h3{margin:0 0 8px}
+.modal p{color:var(--muted);font-size:13px}
+.modal pre{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--bg);border-radius:9px;padding:13px;font:inherit;font-size:13px}
+.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:16px}
+@media(max-width:760px){
+header{padding:15px 17px}
+.brand h1{font-size:18px}
+.status{font-size:11px}
+.intro{display:block}
+.intro h2{font-size:22px}
+.demo{display:inline-block;margin-top:12px}
+.layout{grid-template-columns:1fr}
+main{margin-top:18px;padding:0 13px 32px}
+.panel-head,.panel-body{padding-left:15px;padding-right:15px}
+.tag{display:none}
+}
 </style>
 </head>
+
 <body>
-<header><div class="brand"><div class="logo">K</div><div><h1>KUVAG SMS</h1><p>Interní komunikace se zaměstnanci</p></div></div><div class="status">● Ukázkový režim</div></header>
+
+<header>
+  <div class="brand">
+    <div class="logo">K</div>
+    <div>
+      <h1>KUVAG SMS</h1>
+      <p>Interní komunikace se zaměstnanci</p>
+    </div>
+  </div>
+  <div class="status">● Ukázkový režim</div>
+</header>
+
 <main>
-  <div class="intro"><div><h2>Nová SMS</h2><p>Vyber příjemce, připrav zprávu a zkontroluj rozesílku.</p></div><div class="demo">DEMO – zobrazené osoby a čísla jsou pouze fiktivní.</div></div>
+
+  <div class="intro">
+    <div>
+      <h2>Nová SMS</h2>
+      <p>Vyber příjemce, připrav zprávu a zkontroluj rozesílku.</p>
+    </div>
+    <div class="demo">DEMO – zobrazené osoby a čísla jsou pouze fiktivní.</div>
+  </div>
+
   <div class="layout">
+
     <section class="panel">
-      <div class="panel-head"><div><h3>Příjemci</h3><div class="sub">Zdroj: zaměstnanecký Excel na OneDrive (připojení se připravuje)</div></div><span class="tag">Pouze pro čtení</span></div>
-      <div class="panel-body">
-        <div class="toolbar"><input id="search" class="search" type="search" placeholder="Hledat zaměstnance…" aria-label="Hledat zaměstnance"><select id="center" class="select" aria-label="Filtrovat středisko"><option value="">Všechna střediska</option><option>Výroba</option><option>Administrativa</option><option>Sklad</option></select></div>
-        <div class="actions"><button id="toggleAll" class="link" type="button">Vybrat všechny zobrazené</button><span id="visibleCount" class="count"></span></div>
-        <div id="people" class="people">
-          <label class="person" data-name="Ukázkový zaměstnanec A" data-center="Výroba"><input type="checkbox" class="recipient"><span class="person-main"><span class="person-name">Ukázkový zaměstnanec A</span><span class="person-meta">000 000 001</span></span><span class="tag">Výroba</span></label>
-          <label class="person" data-name="Ukázkový zaměstnanec B" data-center="Výroba"><input type="checkbox" class="recipient"><span class="person-main"><span class="person-name">Ukázkový zaměstnanec B</span><span class="person-meta">000 000 002</span></span><span class="tag">Výroba</span></label>
-          <label class="person" data-name="Ukázkový zaměstnanec C" data-center="Administrativa"><input type="checkbox" class="recipient"><span class="person-main"><span class="person-name">Ukázkový zaměstnanec C</span><span class="person-meta">000 000 003</span></span><span class="tag">Administrativa</span></label>
-          <label class="person" data-name="Ukázkový zaměstnanec D" data-center="Sklad"><input type="checkbox" class="recipient"><span class="person-main"><span class="person-name">Ukázkový zaměstnanec D</span><span class="person-meta">000 000 004</span></span><span class="tag">Sklad</span></label>
-          <label class="person" data-name="Ukázkový zaměstnanec E" data-center="Sklad"><input type="checkbox" class="recipient"><span class="person-main"><span class="person-name">Ukázkový zaměstnanec E</span><span class="person-meta">000 000 005</span></span><span class="tag">Sklad</span></label>
+      <div class="panel-head">
+        <div>
+          <h3>Příjemci</h3>
+          <div class="sub">Zdroj: zaměstnanecký Excel na OneDrive (připojení se připravuje)</div>
         </div>
-        <div id="empty" class="empty">Nikdo neodpovídá zadanému filtru.</div>
+        <span class="tag">Pouze pro čtení</span>
       </div>
-    </section>
-    <section class="panel">
-      <div class="panel-head"><div><h3>Text zprávy</h3><div class="sub">Připrav zprávu k odeslání</div></div></div>
+
       <div class="panel-body">
-        <label class="field-label" for="message">Obsah SMS</label>
-        <textarea id="message" maxlength="1000" placeholder="Napiš text zprávy…"></textarea>
-        <div class="message-foot"><span>Počet znaků</span><span id="chars">0 / 1 000</span></div>
-        <div class="summary"><div><span>Vybraní příjemci</span><br><strong id="selectedCount">0</strong></div><span>Odeslání zatím není<br>v ukázce aktivní</span></div>
-        <button id="preview" class="primary" type="button" disabled>Zkontrolovat připravenou SMS</button>
-        <p class="note">V ostré verzi se po kontrole předá šifrovaný požadavek telefonu. Telefon znovu ověří služební SIM 2 a vyžádá si potvrzení. Tato ukázka nic neodesílá.</p>
-        <div class="device"><span class="dot"></span><div><strong>Telefon zatím není připojen</strong><span>Stav se zobrazí po dokončení bezpečného párování.</span></div></div>
+
+        <div class="toolbar">
+          <input id="search" class="search" type="search" placeholder="Hledat zaměstnance…" aria-label="Hledat zaměstnance">
+          <select id="center" class="select" aria-label="Filtrovat středisko">
+            <option value="">Všechna střediska</option>
+            <option>Výroba</option>
+            <option>Administrativa</option>
+            <option>Sklad</option>
+          </select>
+        </div>
+
+        <div class="actions">
+          <button id="toggleAll" class="link" type="button">Vybrat všechny zobrazené</button>
+          <span id="visibleCount" class="count"></span>
+        </div>
+
+        <div id="people" class="people">
+
+          <label class="person" data-name="Ukázkový zaměstnanec A" data-center="Výroba">
+            <input type="checkbox" class="recipient">
+            <span class="person-main">
+              <span class="person-name">Ukázkový zaměstnanec A</span>
+              <span class="person-meta">000 000 001</span>
+            </span>
+            <span class="tag">Výroba</span>
+          </label>
+
+          <label class="person" data-name="Ukázkový zaměstnanec B" data-center="Výroba">
+            <input type="checkbox" class="recipient">
+            <span class="person-main">
+              <span class="person-name">Ukázkový zaměstnanec B</span>
+              <span class="person-meta">000 000 002</span>
+            </span>
+            <span class="tag">Výroba</span>
+          </label>
+
+          <label class="person" data-name="Ukázkový zaměstnanec C" data-center="Administrativa">
+            <input type="checkbox" class="recipient">
+            <span class="person-main">
+              <span class="person-name">Ukázkový zaměstnanec C</span>
+              <span class="person-meta">000 000 003</span>
+            </span>
+            <span class="tag">Administrativa</span>
+          </label>
+
+          <label class="person" data-name="Ukázkový zaměstnanec D" data-center="Sklad">
+            <input type="checkbox" class="recipient">
+            <span class="person-main">
+              <span class="person-name">Ukázkový zaměstnanec D</span>
+              <span class="person-meta">000 000 004</span>
+            </span>
+            <span class="tag">Sklad</span>
+          </label>
+
+          <label class="person" data-name="Ukázkový zaměstnanec E" data-center="Sklad">
+            <input type="checkbox" class="recipient">
+            <span class="person-main">
+              <span class="person-name">Ukázkový zaměstnanec E</span>
+              <span class="person-meta">000 000 005</span>
+            </span>
+            <span class="tag">Sklad</span>
+          </label>
+
+        </div>
+
+        <div id="empty" class="empty">Nikdo neodpovídá zadanému filtru.</div>
+
       </div>
     </section>
+
+    <section class="panel">
+
+      <div class="panel-head">
+        <div>
+          <h3>Text zprávy</h3>
+          <div class="sub">Připrav zprávu k odeslání</div>
+        </div>
+      </div>
+
+      <div class="panel-body">
+
+        <label class="field-label" for="message">Obsah SMS</label>
+
+        <textarea
+          id="message"
+          maxlength="1000"
+          placeholder="Napiš text zprávy…"></textarea>
+
+        <div class="message-foot">
+          <span>Počet znaků</span>
+          <span id="chars">0 / 1 000</span>
+        </div>
+
+        <div class="summary">
+          <div>
+            <span>Vybraní příjemci</span><br>
+            <strong id="selectedCount">0</strong>
+          </div>
+          <span>
+            Odeslání zatím není<br>
+            v ukázce aktivní
+          </span>
+        </div>
+
+        <button id="preview" class="primary" type="button" disabled>
+          Zkontrolovat připravenou SMS
+        </button>
+
+        <p class="note">
+          V ostré verzi se po kontrole předá šifrovaný požadavek telefonu.
+          Telefon znovu ověří služební SIM 2 a vyžádá si potvrzení.
+          Tato ukázka nic neodesílá.
+        </p>
+
+        <div class="device">
+          <span class="dot"></span>
+          <div>
+            <strong>Telefon zatím není připojen</strong>
+            <span>Stav se zobrazí po dokončení bezpečného párování.</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
   </div>
 </main>
-<footer>KUVAG SMS · Responzivní prototyp · Bez připojení k zaměstnaneckým datům a bez možnosti odesílání.</footer>
-<dialog id="previewDialog"><div class="modal"><h3>Kontrola zprávy</h3><p>Ukázkový náhled. Zpráva nebude odeslána.</p><div id="previewRecipients"></div><pre id="previewText"></pre><div class="modal-actions"><button id="closePreview" class="secondary" type="button">Zavřít</button></div></div></dialog>
+
+<footer>
+  KUVAG SMS · Responzivní prototyp · Bez připojení k zaměstnaneckým datům a bez možnosti odesílání.
+</footer>
+
+<dialog id="previewDialog">
+  <div class="modal">
+    <h3>Kontrola zprávy</h3>
+    <p>Ukázkový náhled. Zpráva nebude odeslána.</p>
+    <div id="previewRecipients"></div>
+    <pre id="previewText"></pre>
+    <div class="modal-actions">
+      <button id="closePreview" class="secondary" type="button">Zavřít</button>
+    </div>
+  </div>
+</dialog>
+
 <script>
-const cards=[...document.querySelectorAll('.person')],search=document.getElementById('search'),center=document.getElementById('center'),selected=document.getElementById('selectedCount'),preview=document.getElementById('preview'),message=document.getElementById('message');
-function visibleCards(){return cards.filter(c=>c.style.display!=='none')}
-function update(){const q=search.value.trim().toLocaleLowerCase('cs'),dep=center.value;cards.forEach(c=>{c.style.display=(c.dataset.name.toLocaleLowerCase('cs').includes(q)&&(!dep||c.dataset.center===dep))?'flex':'none'});const chosen=document.querySelectorAll('.recipient:checked').length;selected.textContent=chosen;document.getElementById('visibleCount').textContent=visibleCards().length+' z '+cards.length;document.getElementById('empty').style.display=visibleCards().length?'none':'block';document.getElementById('chars').textContent=message.value.length.toLocaleString('cs-CZ')+' / 1 000';preview.disabled=!chosen||!message.value.trim()}
-document.querySelectorAll('.recipient').forEach(c=>c.addEventListener('change',update));search.addEventListener('input',update);center.addEventListener('change',update);message.addEventListener('input',update);
-document.getElementById('toggleAll').addEventListener('click',()=>{const shown=visibleCards(),all=shown.length&&shown.every(c=>c.querySelector('input').checked);shown.forEach(c=>c.querySelector('input').checked=!all);update()});
-preview.addEventListener('click',()=>{const names=cards.filter(c=>c.querySelector('input').checked).map(c=>c.dataset.name);document.getElementById('previewRecipients').textContent='Příjemci ('+names.length+'): '+names.join(', ');document.getElementById('previewText').textContent=message.value;document.getElementById('previewDialog').showModal()});
-document.getElementById('closePreview').addEventListener('click',()=>document.getElementById('previewDialog').close());update();
+const cards = [...document.querySelectorAll('.person')],
+      search = document.getElementById('search'),
+      center = document.getElementById('center'),
+      selected = document.getElementById('selectedCount'),
+      preview = document.getElementById('preview'),
+      message = document.getElementById('message');
+
+function visibleCards() {
+  return cards.filter(c => c.style.display !== 'none');
+}
+
+function update() {
+  const q = search.value.trim().toLocaleLowerCase('cs');
+  const dep = center.value;
+
+  cards.forEach(c => {
+    c.style.display =
+      (c.dataset.name.toLocaleLowerCase('cs').includes(q) &&
+      (!dep || c.dataset.center === dep))
+        ? 'flex'
+        : 'none';
+  });
+
+  const chosen = document.querySelectorAll('.recipient:checked').length;
+
+  selected.textContent = chosen;
+
+  document.getElementById('visibleCount').textContent =
+    visibleCards().length + ' z ' + cards.length;
+
+  document.getElementById('empty').style.display =
+    visibleCards().length ? 'none' : 'block';
+
+  document.getElementById('chars').textContent =
+    message.value.length.toLocaleString('cs-CZ') + ' / 1 000';
+
+  preview.disabled = !chosen || !message.value.trim();
+}
+
+document.querySelectorAll('.recipient').forEach(c =>
+  c.addEventListener('change', update)
+);
+
+search.addEventListener('input', update);
+center.addEventListener('change', update);
+message.addEventListener('input', update);
+
+document.getElementById('toggleAll').addEventListener('click', () => {
+  const shown = visibleCards();
+  const all =
+    shown.length &&
+    shown.every(c => c.querySelector('input').checked);
+
+  shown.forEach(c =>
+    c.querySelector('input').checked = !all
+  );
+
+  update();
+});
+
+preview.addEventListener('click', () => {
+  const names = cards
+    .filter(c => c.querySelector('input').checked)
+    .map(c => c.dataset.name);
+
+  document.getElementById('previewRecipients').textContent =
+    'Příjemci (' + names.length + '): ' + names.join(', ');
+
+  document.getElementById('previewText').textContent =
+    message.value;
+
+  document.getElementById('previewDialog').showModal();
+});
+
+document.getElementById('closePreview').addEventListener('click', () =>
+  document.getElementById('previewDialog').close()
+);
+
+update();
 </script>
-</body></html>
+
+</body>
+</html>
