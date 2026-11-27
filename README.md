@@ -35,3 +35,5 @@ Podrobnosti: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 ## Vývoj
 
 Projekt zůstává v tomto repozitáři. Vývoj probíhá přes GitHub v prohlížeči; na firemní počítač není potřeba instalovat vývojové prostředí. Instalace doprovodné aplikace do telefonu je nutná.
+
+GitHub Pages deployment test.
