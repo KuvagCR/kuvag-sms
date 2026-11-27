@@ -201,6 +201,7 @@ class MainActivity : Activity() {
         if (requestCode == phonePermissionRequestCode) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 showSimStatus()
+                requestSmsPermissionOnFirstLaunch()
             } else {
                 result.text = "Oprávnění k ověření SIM nebylo povoleno. Odesílání je zablokováno."
             }
