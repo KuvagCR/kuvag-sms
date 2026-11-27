@@ -85,6 +85,21 @@ class MainActivity : Activity() {
             return
         }
         showSimStatus()
+        requestSmsPermissionOnFirstLaunch()
+    }
+
+    private fun requestSmsPermissionOnFirstLaunch() {
+        if (checkSelfPermission(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
+            result.text = result.text.toString() + "\n\nOprávnění SMS je již povoleno."
+            return
+        }
+        val sim = try { verifiedBusinessSim() } catch (_: Exception) { null }
+        if (sim == null) {
+            result.text = result.text.toString() + "\n\nOprávnění SMS zatím nebylo vyžádáno, protože služební SIM ve slotu 2 nelze ověřit."
+            return
+        }
+        result.text = result.text.toString() + "\n\nNyní požádám Android o oprávnění k SMS. Pokud Android žádost zablokuje, bude nutné vyřešit povolení při instalaci."
+        requestPermissions(arrayOf(Manifest.permission.SEND_SMS), smsPermissionRequestCode)
     }
 
     @Suppress("MissingPermission")
@@ -191,9 +206,9 @@ class MainActivity : Activity() {
             }
         } else if (requestCode == smsPermissionRequestCode) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                showFinalConfirmation()
+                result.text = result.text.toString() + "\n\nOprávnění SMS bylo povoleno. Zadej své vlastní číslo a stiskni „Připravit testovací SMS“. Bez dalšího potvrzení se nic neodešle."
             } else {
-                result.text = "Oprávnění k odesílání SMS nebylo povoleno. Nic nebylo odesláno."
+                result.text = result.text.toString() + "\n\nAndroid oprávnění SMS nepovolil. To může být způsobeno hard-restricted omezením SEND_SMS při instalaci. Nic nebylo odesláno."
             }
         }
     }
