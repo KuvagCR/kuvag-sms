@@ -4,71 +4,34 @@ Soukromý projekt pro interní rozesílání pracovních SMS zaměstnancům KUVA
 
 ## Cíl
 
-Desktopové rozhraní pro výběr příjemců podle zaměstnanců a středisek. Kontakty se budou pouze číst z existujícího zaměstnaneckého Excelu na OneDrivu. SMS bude odesílat doprovodná aplikace na vlastním telefonu Android přes výslovně zvolenou služební SIM ve slotu 2.
+Jedna responzivní webová aplikace pro počítač i mobil. Počítač je hlavní pracovní prostředí, mobilní web je záložní možnost. Kontakty se načítají pouze pro čtení z existujícího zaměstnaneckého Excelu na OneDrivu. Samostatná Android aplikace v telefonu odesílá SMS výhradně přes ověřenou služební SIM ve slotu 2.
 
-## Bezpečnostní zásady
+## Zásady
 
-- Do tohoto repozitáře nikdy nevkládat zaměstnanecká jména, telefonní čísla, osobní čísla, exporty Excelu, přístupové tokeny ani tajné klíče.
 - Excel zůstává jediným zdrojem zaměstnaneckých údajů; aplikace jej nesmí upravovat.
+- Do GitHubu nikdy nevkládat zaměstnanecká jména, telefonní čísla, osobní čísla, exporty Excelu, tokeny ani tajné klíče.
 - Žádná externí SMS brána ani databáze zaměstnanců.
-- Odesílání musí být zastaveno, pokud nelze jednoznačně ověřit služební SIM ve slotu 2. Nikdy nepřepnout na SIM 1.
-- Před každou skutečnou rozesílkou zobrazit souhrn příjemců a vyžadovat potvrzení.
-- Historii odesílání ukládat lokálně a přístup k ní chránit.
+- Odesílání se zastaví, pokud nelze jednoznačně ověřit služební T-Mobile SIM ve slotu 2. Nikdy nepřepnout na SIM 1.
+- Každá rozesílka vyžaduje kontrolu příjemců a textu a samostatné potvrzení přímo na telefonu.
+- Webové rozhraní bude stejné na počítači i mobilu; telefon zůstává odesílacím zařízením.
 
-## Navržená architektura
+## Architektura
 
-1. **Webové rozhraní** běží lokálně na počítači a slouží k výběru příjemců, psaní zpráv a kontrole rozesílky.
-2. **Čtení Excelu** probíhá přes Microsoft Graph s minimálními oprávněními a pouze pro čtení. Přístup bude nutné ověřit s firemním IT.
-3. **Android aplikace** v telefonu přijímá pokyny z lokální sítě a odesílá SMS přes explicitně vybranou SIM 2.
-4. **Propojení PC–telefon** bude lokální a zabezpečené; žádný veřejný server ani SMS poskytovatel.
+Web načítá kontakty přes Microsoft Graph pouze pro čtení. Pro propojení počítače a telefonu v různých sítích je nutný internetový relay. Obsah zpráv a příjemců musí být šifrován mezi webem a spárovaným telefonem; relay má přenášet pouze ciphertext a krátkodobá technická metadata. Poskytovatel a umístění relay zatím nejsou vybrány. Před použitím skutečných zaměstnaneckých údajů je nutné schválení KUVAG a firemního IT.
 
-Tato architektura je návrh, nikoli potvrzení kompatibility telefonu. Výběr SIM 2 a oprávnění Androidu ověříme na konkrétním modelu ještě před implementací odesílání.
+Podrobnosti: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-## Stav
+## Aktuální stav
 
-- [x] Soukromý GitHub repozitář založen
-- [x] Bezpečnostní zásady a architektura sepsány
-- [ ] Ověřit přesný model OnePlus a verzi Androidu
-- [x] Připravena první diagnostická Android aplikace – pouze čte aktivní SIM a jejich sloty; SMS zatím neumí odesílat
-- [ ] Prakticky ověřit zobrazení SIM 1 a SIM 2 na OnePlus Nord CE5
-- [ ] Ověřit možnost vynuceného odesílání přes SIM 2
-- [ ] Zjistit názvy sloupců v Excelu (bez sdílení reálných osobních údajů)
-- [ ] Ověřit možnosti Microsoft Graph a firemní IT souhlas
-- [ ] Vytvořit lokální webové rozhraní
-- [ ] Vytvořit Android doprovodnou aplikaci
-- [ ] Otestovat nejprve pouze s vlastním testovacím číslem
+- [x] Soukromý repozitář a zásady ochrany dat
+- [x] Android aplikace ověřuje T-Mobile SIM ve slotu 2
+- [x] Na OnePlus Nord CE5 / Android 16 úspěšně povoleno oprávnění SMS a odeslán test na vlastní číslo
+- [ ] Responzivní webové rozhraní
+- [ ] Přihlášení Microsoft a čtení určeného Excelu přes Graph
+- [ ] Schválení a nasazení internetového relay
+- [ ] Párování webu s telefonem a šifrované předávání úloh
+- [ ] Pilotní test s vlastními čísly
 
 ## Vývoj
 
-Projekt budeme připravovat přes GitHub Codespaces v prohlížeči, bez nutnosti instalovat vývojové prostředí na počítač. Instalace doprovodné aplikace do telefonu bude nutná.
-
-
-## Ověření telefonu: OnePlus Nord CE5
-
-Oficiální specifikace OnePlus potvrzují dva sloty pro nano-SIM (hybridní zásuvka: druhá pozice může být alternativně využita pro microSD). Telefon tedy hardwarově podporuje dvě SIM, pokud jsou skutečně vloženy dvě SIM karty.
-
-Na Androidu lze postupovat bezpečněji než přes výchozí SIM:
-- načíst aktivní předplatná SIM,
-- zjistit slot index každého předplatného,
-- vybrat pouze předplatné se slot indexem **1** (Android čísluje sloty od nuly, takže index 1 odpovídá druhému slotu),
-- vytvořit SmsManager výslovně pro toto subscription ID pomocí createForSubscriptionId,
-- pokud slot 1 nebo jeho subscription ID chybí, je neplatné nebo se nedá ověřit, odeslání zablokovat.
-
-Tohle je podporovaný postup Android API, nikoli ještě prakticky ověřená záruka pro konkrétní firmware OnePlus. Před skutečným použitím uděláme diagnostický test, který pouze zobrazí nalezené SIM a jejich sloty. Teprve po potvrzení správné služební SIM připravíme testovací SMS na vlastní číslo.
-
-Zdroje:
-- [Oficiální specifikace OnePlus Nord CE5](https://www.oneplus.com/mt/nord-ce5/specs)
-- [Android SubscriptionManager](https://developer.android.com/reference/android/telephony/SubscriptionManager)
-- [Android SmsManager](https://developer.android.com/reference/android/telephony/SmsManager)
-
-
-## První diagnostická verze Android aplikace
-
-Ve složce `app/` je připraven základ Android aplikace. Po instalaci požádá pouze o oprávnění `READ_PHONE_STATE` a zobrazí aktivní SIM, operátora, název SIM a číslo slotu.
-
-- Aplikace **neobsahuje oprávnění SEND_SMS** a neumí odesílat zprávy.
-- Nečte telefonní čísla SIM ani kontakty.
-- Nemá síťové oprávnění a nic neposílá na internet.
-- Slot 2 označí jako kandidáta pro služební SIM; zatím se nespoléháme na to, že samotný slot potvrzuje, která karta je služební.
-
-Další postup: nejprve sestavit a nainstalovat diagnostickou verzi, na telefonu ověřit, že služební karta je skutečně uvedena ve slotu 2, a teprve potom navrhnout bezpečný test explicitního výběru SIM 2. Žádné hromadné odesílání se zatím nepřipravuje.
+Projekt zůstává v tomto repozitáři. Vývoj probíhá přes GitHub v prohlížeči; na firemní počítač není potřeba instalovat vývojové prostředí. Instalace doprovodné aplikace do telefonu je nutná.
